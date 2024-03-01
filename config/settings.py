@@ -16,6 +16,12 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
+AUTHENTICATION_BACKENDS = [
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+    # `allauth` specific authentication methods, such as login by email
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
@@ -27,8 +33,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
+SITE_ID = 1
 # Application definition
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -41,6 +48,8 @@ INSTALLED_APPS = [
     'pages',
     'crispy_forms',
     'crispy_bootstrap4',
+    'allauth',
+    'allauth.account',
 ]
 
 MIDDLEWARE = [
@@ -51,6 +60,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -135,3 +145,8 @@ AUTH_USER_MODEL = 'accounts.CustomUser'
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_UNIQUE_EMAIL = True
